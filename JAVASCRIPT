@@ -1,0 +1,111 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const gameBoard = document.getElementById('gameBoard');
+  const message = document.getElementById('message');
+  const resetBtn = document.querySelector('.reset-btn');
+  const playerVsPlayerBtn = document.getElementById('playerVsPlayer');
+  const playerVsAIBtn = document.getElementById('playerVsAI');
+  let currentPlayer = 'X';
+  let isGameOver = false;
+  let isPlayerVsPlayer = true;
+
+  // Initialize the game board
+  const cells = Array.from({ length: 9 }, (_, index) => {
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+    cell.dataset.index = index;
+    cell.addEventListener('click', () => makeMove(cell));
+    gameBoard.appendChild(cell);
+    return cell;
+  });
+
+  function makeMove(cell) {
+    if (!isGameOver && cell.textContent === '') {
+      cell.textContent = currentPlayer;
+      const winner = checkWinner();
+
+      if (winner) {
+        endGame(`${winner} wins!`);
+      } else if (isBoardFull()) {
+        endGame('It\'s a draw!');
+      } else {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        if (!isPlayerVsPlayer && currentPlayer === 'O') {
+          makeAIMove();
+        }
+      }
+    }
+  }
+
+  function checkWinner() {
+    const winningCombinations = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+      [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+
+    for (const combo of winningCombinations) {
+      const [a, b, c] = combo;
+      if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+        highlightWinner(cells[a], cells[b], cells[c]);
+        return cells[a].textContent;
+      }
+    }
+    return null;
+  }
+
+  function highlightWinner(cell1, cell2, cell3) {
+    cell1.style.color = '#4caf50';
+    cell2.style.color = '#4caf50';
+    cell3.style.color = '#4caf50';
+  }
+
+  function isBoardFull() {
+    return cells.every(cell => cell.textContent !== '');
+  }
+
+  function endGame(msg) {
+    isGameOver = true;
+    message.textContent = msg;
+    resetBtn.style.display
+      = 'block';
+  }
+
+  function resetGame() {
+    cells.forEach(cell => {
+      cell.textContent = '';
+      cell.style.color = '#000';
+    });
+
+    message.textContent = '';
+    resetBtn.style.display = 'none';
+    isGameOver = false;
+    currentPlayer = 'X';
+
+    if (!isPlayerVsPlayer && currentPlayer === 'O') {
+      makeAIMove();
+    }
+  }
+
+  function makeAIMove() {
+    const emptyCells = cells.filter(cell => cell.textContent === '');
+    if (emptyCells.length > 0) {
+      const randomIndex = Math.floor(Math.random() * emptyCells.length);
+      makeMove(emptyCells[randomIndex]);
+    }
+  }
+
+  resetBtn.addEventListener('click', resetGame);
+  playerVsPlayerBtn.addEventListener('click', () => setupGame(true));
+  playerVsAIBtn.addEventListener('click', () => setupGame(false));
+
+  function setupGame(isPlayerVsPlayerMode) {
+    isPlayerVsPlayer = isPlayerVsPlayerMode;
+    resetGame();
+    message.textContent = `Game mode: ${isPlayerVsPlayer ? 'Player vs Player' : 'Player vs AI'}`;
+
+    if (!isPlayerVsPlayer && currentPlayer === 'O') {
+      makeAIMove();
+    }
+  }
+});
+
