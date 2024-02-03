@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  font-family: 'Times New Roman', sans-serif;
+  background-image: url('https://images.pexels.com/photos/844297/pexels-photo-844297.jpeg?cs=srgb&dl=pexels-eberhard-grossgasteiger-844297.jpg&fm=jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-container {
+  text-align: center;
+  background: linear-gradient(45deg, #d9e2ef, #ffffff, #d9e2ef);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.game-options button {
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.game-options {
+  margin-bottom: 20px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 5px;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #d9e2ef, #ffffff, #d9e2ef);
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background-color: #f9f9f9;
+}
+
+.message {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.reset-btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
